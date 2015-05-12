@@ -4,6 +4,7 @@
 {-# LANGUAGE TypeFamilies #-}
 module Main where
 
+import Prelude
 import Yesod
 
 data HelloWorld = HelloWorld
