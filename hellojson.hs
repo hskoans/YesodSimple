@@ -6,6 +6,7 @@
 
 import Prelude
 import Yesod
+import Data.Text (Text)
 
 data App = App
 
@@ -15,8 +16,9 @@ mkYesod "App" [parseRoutes|
 
 instance Yesod App
 
-getHomeR :: Monad m => m Value
-getHomeR = return $ object [ "msg" .= "Hello, World"]
+getHomeR :: Handler Value 
+getHomeR = returnJson $ object [ "msg" .= msg ]
+    where msg = "Hello, World" :: Text
 
 main :: IO()
 main = warp 3000 App
