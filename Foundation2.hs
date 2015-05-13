@@ -9,12 +9,17 @@ import Prelude
 import Yesod
 import Control.Concurrent.STM
 import Data.ByteString.Lazy (ByteString)
+import Data.Default
 import Data.Text (Text)
-import qualified Data.Text as Text
+import Text.Hamlet
+import Yesod.Default.Util
 
 data App = App (TVar [(Text, ByteString)])      -- Using Text to store our filenames at application state level
                                                 -- Use TVar to mark our Text list as a transactional variable
-instance Yesod App
+instance Yesod App where
+    defaultLayout widget = do
+        pc <- widgetToPageContent $ $(widgetFileNoReload def "default-layout2")
+        withUrlRenderer $(hamletFile "templates/default-layout-wrapper2.hamlet")
 
 instance RenderMessage App FormMessage where
     renderMessage _ _ = defaultFormMessage
