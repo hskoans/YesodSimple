@@ -17,7 +17,7 @@ mkYesod "App" [parseRoutes|
 
 getHomeR :: Handler Html
 getHomeR = defaultLayout $ do
-    let filenames = [] :: [String]
+    let filenames = ["hello.txt", "whatever.png"] :: [String]
     setTitle "File Processor"
     toWidget [whamlet|
 <h2>Previously submitted files
