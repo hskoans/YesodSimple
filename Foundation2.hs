@@ -1,3 +1,4 @@
+{-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE TypeFamilies #-}
@@ -12,6 +13,9 @@ import Control.Concurrent.STM
 data App = App (TVar [Text])    -- Using Text to store our filenames at application state level
                                 -- Use TVar to mark our Text list as a transactional variable
 instance Yesod App
+
+instance RenderMessage App FormMessage where
+    renderMessage _ _ = defaultFormMessage
 
 mkYesodData "App" $(parseRoutesFile "config/routes2")
 
