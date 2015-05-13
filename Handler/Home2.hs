@@ -13,7 +13,7 @@ import Foundation2
 
 getHomeR :: Handler Html
 getHomeR = do
-    let filenames = ["hello.txt", "whatever.png", "hooray.jpg"] :: [String]
+    filenames <- getList -- getList is able to get the list stored in memory because we make it available at App [Text]
     defaultLayout $ do
         setTitle "File Processor"
         $(widgetFileNoReload def "home2")
