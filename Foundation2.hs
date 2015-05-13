@@ -8,10 +8,11 @@ module Foundation2 where
 import Prelude
 import Yesod
 import Data.Text (Text)
+import Data.ByteString.Lazy (ByteString)
 import Control.Concurrent.STM
 
-data App = App (TVar [Text])    -- Using Text to store our filenames at application state level
-                                -- Use TVar to mark our Text list as a transactional variable
+data App = App (TVar [(Text, ByteString)])      -- Using Text to store our filenames at application state level
+                                                -- Use TVar to mark our Text list as a transactional variable
 instance Yesod App
 
 instance RenderMessage App FormMessage where
@@ -22,9 +23,10 @@ mkYesodData "App" $(parseRoutesFile "config/routes2")
 getList :: Handler [Text]
 getList = do
     App tstate <- getYesod
-    liftIO $ readTVarIO tstate
+    state <- liftIO $ readTVarIO tstate
+    return $ map fst state
 
-addFile :: App -> Text -> Handler ()
+addFile :: App -> (Text, ByteString) -> Handler ()
 addFile (App tstore) op =
     liftIO . atomically $ do
         modifyTVar tstore $ \ ops -> op : ops

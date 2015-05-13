@@ -77,6 +77,8 @@ library
                  , fast-logger                   >= 2.2        && < 2.4
                  , wai-logger                    >= 2.2        && < 2.3
                  , file-embed
+                 , conduit-extra
+                 , resourcet
                  , safe
                  , stm
                  , unordered-containers
