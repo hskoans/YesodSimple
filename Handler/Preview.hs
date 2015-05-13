@@ -31,6 +31,6 @@ preview bytes = do
     eText <- try . evaluate $ LT.decodeUtf8 bytes :: IO (Either SomeException LT.Text)
     return $ case eText of
         Left _ -> errorMessage
-        Right text -> [whamlet|<pre>#{text}|]
+        Right mytext -> [whamlet|<pre>#{mytext}|]
     where
         errorMessage = [whamlet|<pre>Unable to display file contents.|]
