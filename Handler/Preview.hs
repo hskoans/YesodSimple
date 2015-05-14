@@ -8,7 +8,6 @@ import Prelude
 import Control.Exception hiding (Handler)
 import qualified Data.ByteString.Lazy as LB
 import Data.Default
-import Data.Text (Text)
 import qualified Data.Text as Text
 import qualified Data.Text.Lazy as LT
 import qualified Data.Text.Lazy.Encoding as LT
@@ -18,9 +17,9 @@ import Yesod.Default.Util
 
 import Foundation2
 
-getPreviewR :: Text -> Handler Html
-getPreviewR filename = do
-    bytes <- getById filename
+getPreviewR :: Int -> Handler Html
+getPreviewR fileid = do
+    StoredFile filename bytes <- getById fileid
     defaultLayout $ do
         setTitle . toMarkup $ "File Processor - " `Text.append` filename
         previewBlock <- liftIO $ preview bytes

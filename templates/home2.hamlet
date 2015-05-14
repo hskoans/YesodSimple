@@ -1,11 +1,11 @@
-$if null filenames
+$if null storedFiles
     <p>No files have been uploaded yet.
 $else
     <h2>Previously submitted files
     <ul>
-        $forall filename <- filenames
+        $forall (fileid, StoredFile filename _) <- storedFiles
             <li>
-                <a href=@{PreviewR filename}>#{filename}
+                <a href=@{PreviewR fileid}>#{filename}
 
 <h2>Submit new file
 <form method=post action=@{HomeR} enctype=#{formEncType}>

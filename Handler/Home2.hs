@@ -17,7 +17,7 @@ import Foundation2
 getHomeR :: Handler Html
 getHomeR = do
     (formWidget, formEncType) <- generateFormPost uploadForm
-    filenames <- getList -- getList is able to get the list stored in memory because we make it available at App [Text]
+    storedFiles <- getList -- getList is able to get the list stored in memory because we make it available at App [Text]
     defaultLayout $ do
         setTitle "File Processor"
         $(widgetFileNoReload def "home2")
@@ -29,7 +29,7 @@ postHomeR = do
         FormSuccess fi -> do
             app <- getYesod
             fileBytes <- runResourceT $ fileSource fi $$ sinkLbs
-            addFile app (fileName fi, fileBytes)
+            addFile app $ StoredFile (fileName fi) fileBytes
         _ -> return ()
     redirect HomeR
 

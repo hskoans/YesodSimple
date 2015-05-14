@@ -12,5 +12,6 @@ import Foundation2
 
 main :: IO ()
 main = do
-    tfilenames <- atomically $ newTVar []
-    warpEnv $ App tfilenames 
+    tnextid <- newTVarIO 1
+    tstore <- newTVarIO []
+    warpEnv $ App tnextid tstore
