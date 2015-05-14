@@ -26,6 +26,7 @@ getPreviewR filename = do
         previewBlock <- liftIO $ preview bytes
         $(widgetFileNoReload def "preview")
 
+-- only supports txt files for now
 preview :: LB.ByteString -> IO Widget
 preview bytes = do
     eText <- try . evaluate $ LT.decodeUtf8 bytes :: IO (Either SomeException LT.Text)

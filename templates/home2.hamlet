@@ -4,7 +4,8 @@ $else
     <h2>Previously submitted files
     <ul>
         $forall filename <- filenames
-            <li>#{filename}
+            <li>
+                <a href=@{PreviewR filename}>#{filename}
 
 <h2>Submit new file
 <form method=post action=@{HomeR} enctype=#{formEncType}>
