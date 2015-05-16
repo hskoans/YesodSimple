@@ -11,12 +11,14 @@ import Yesod
 import Control.Concurrent.STM
 import Data.ByteString.Lazy (ByteString)
 import Data.Default
+import Data.IntMap (IntMap)
+import qualified Data.IntMap as IntMap
 import Data.Text (Text)
 import Text.Hamlet
 import Yesod.Default.Util
 
 data StoredFile = StoredFile !Text !ByteString
-type Store = [(Int, StoredFile)]
+type Store = IntMap StoredFile
 data App = App (TVar Int) (TVar Store)
 
 instance Yesod App where
@@ -38,18 +40,19 @@ getNextId (App tnextId _) = do
 getList :: Handler [(Int, StoredFile)]
 getList = do
     App _ tstore <- getYesod
-    liftIO $ readTVarIO tstore
+    store <- liftIO $ readTVarIO tstore
+    return $ IntMap.toList store
 
 addFile :: App -> StoredFile -> Handler ()
 addFile app@(App _ tstore) file =
     liftIO . atomically $ do
-        nextId <- getNextId app
-        modifyTVar tstore $ \ files -> (nextId, file) : files
+        ident <- getNextId app
+        modifyTVar tstore $ IntMap.insert ident file
 
 getById :: Int -> Handler StoredFile
 getById ident = do
     App _ tstore <- getYesod
     store <- liftIO $ readTVarIO tstore
-    case lookup ident store of
+    case IntMap.lookup ident store of
         Nothing -> notFound
         Just file -> return file

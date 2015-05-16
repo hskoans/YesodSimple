@@ -3,9 +3,9 @@ $if null storedFiles
 $else
     <h2>Previously submitted files
     <ul>
-        $forall (fileid, StoredFile filename _) <- storedFiles
+        $forall (ident, StoredFile filename _) <- storedFiles
             <li>
-                <a href=@{PreviewR fileid}>#{filename}
+                <a href=@{PreviewR ident}>#{filename}
 
 <h2>Submit new file
 <form method=post action=@{HomeR} enctype=#{formEncType}>
